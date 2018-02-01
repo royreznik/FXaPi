@@ -9,7 +9,6 @@ import re
 
 FxpEvents = EventEmitter(wildcards=True)
 
-
 class fxpLive():
 	def __init__(self, user):
 		self.user = user
