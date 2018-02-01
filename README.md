@@ -20,7 +20,7 @@ def on_newpm_handle(data):
 def on_newtread_handle(data):
 	print ('New thread')
 	
-user = fxp('FXP-USERNAME','FXPֹֹֹ-PASSWORD')
+user = fxp('FXP_USERNAME','FXPֹֹֹ_PASSWORD')
 
 if user.login():
 	print ('[*] Login success - %s' % user.username)
@@ -34,3 +34,5 @@ if user.login():
 			time.sleep(1)
 
 ```
+
+![FXP LOGO](https://images.fxp.co.il/images3/logo-fxp-m.png)
