@@ -4,6 +4,44 @@ Fxp python api
 ## About
 I created the api for my own personal use, i made bots and some other cool stuff.
 
+## Basics
+```python
+#user = fxp from fxplib
+
+#Login
+#try login and return True if successed or False if failed
+user.login()
+-----------------------------------------------------------------
+#createThread
+#create new thread in certain forum
+user.createThread(TITLE, CONTENT, FORUM_ID)
+-----------------------------------------------------------------
+#comment
+#comment on thread
+user.comment(THREAD_ID, CONTENT)
+
+#editComment
+#edit your comment
+#if ADD is True app will add the CONTENT to the existing CONTENT
+user.editComment(COMMENT_ID, CONTENT, ADD=True/False)
+-----------------------------------------------------------------
+#like
+#like comment, return True if successed or False if failed
+user.like(COMMENT_ID)
+-----------------------------------------------------------------
+#createPrivateChat
+#start chat with username
+user.createPrivateChat(TO_USERNAME, TITLE, CONTENT)
+
+#sendPrivateChat
+#send message to existing chat
+usser.sendPrivateChat(TO_USERNAME, FIRST_PM_ID, CONTENT)
+-----------------------------------------------------------------
+#updateProfileImage
+#update user profile picture, IMG_PATH could be a url or system path
+user.updateProfileImage(IMG_PATH)
+```
+
 ## Example
 ```python
 import time
