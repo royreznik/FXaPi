@@ -1,6 +1,6 @@
 from __future__ import print_function #Fix lambda print
 from pymitter import EventEmitter
-from socketio_cli3 import SocketIO_cli
+from .socketioclient import SocketIO_cli
 import requests
 from bs4 import BeautifulSoup
 import time
