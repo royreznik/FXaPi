@@ -1,6 +1,8 @@
 # FXaPi
 Fxp python api
 
+## About
+I created the api for my own personal use, i made bots and some other cool stuff.
 
 ## Example
 ```python
@@ -32,7 +34,10 @@ if user.login():
 		user.livefxp.addForum(21)
 		while True:
 			time.sleep(1)
-
 ```
 
-![FXP LOGO](https://images.fxp.co.il/images3/logo-fxp-m.png)
+## Todo List
+- [x] Finish the base
+- [ ] Organize my code
+- [ ] Add more web interface features
+- [ ] fxpLive class rewriting
