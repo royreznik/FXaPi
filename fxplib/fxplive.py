@@ -9,23 +9,14 @@ import re
 
 FxpEvents = EventEmitter(wildcards=True)
 
-#_ make the class private
+
 class fxpLive():
 	def __init__(self, user):
-		self.user = user #self of main class
+		self.user = user
 		self._liveConnectionForums = []
 		self.socketIO = None
 
-
-	#---------------------New---------------------
-	def userNodeData(self):
-		r = self.user.sess.get('https://www.fxp.co.il/showthread.php?t=1239165') #MUST SEE THAT
-
-		useridnodejs = re.search('var useridnodejs = "(.+?)";', r.text).group(1)
-		usernamenodejs = re.search('var usernamenodejs = "(.+?)";', r.text).group(1)
-
-		return {'id':useridnodejs, 'username':usernamenodejs}
-
+	#connect function
 	def connect(self, debug=False):
 		if self.socketIO == None:
 			if self.user.liveupdatetoken == None: 
@@ -138,3 +129,12 @@ class fxpLive():
 			pass		
 
 	#/---------------Socket.io events Functions---------------/#
+
+
+	#---------------------New---------------------
+	def userNodeData(self):
+		r = self.user.sess.get('https://www.fxp.co.il/showthread.php?t=1239165') #MUST SEE THAT
+		useridnodejs = re.search('var useridnodejs = "(.+?)";', r.text).group(1)
+		usernamenodejs = re.search('var usernamenodejs = "(.+?)";', r.text).group(1)
+		return {'id':useridnodejs, 'username':usernamenodejs}
+	#---------------------New---------------------
