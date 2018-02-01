@@ -35,4 +35,4 @@ if user.login():
 
 ```
 
-![alt tag](https://images.fxp.co.il/images3/logo-fxp-m.png)
+![FXP LOGO](https://images.fxp.co.il/images3/logo-fxp-m.png)
