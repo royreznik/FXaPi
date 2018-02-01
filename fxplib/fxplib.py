@@ -63,8 +63,8 @@ class fxp():
 		else: 
 			return False
 
-	#user.createEshkol(TITLE, CONTENT, FORUM_ID)
-	def createEshkol(self, title, content, froumid, prefix=''):
+	#user.createThread(TITLE, CONTENT, FORUM_ID)
+	def createThread(self, title, content, froumid, prefix=''):
 		#if prefix == '': fxpData.prefixIds[froumid][prefix]
 		r = self.sess.post('https://www.fxp.co.il/newthread.php?do=newthread&f=%s' % froumid, data={
 			'prefixid':prefix,
@@ -230,7 +230,7 @@ class fxp():
 
 
 	'''
-	def getForumEshkolot(self, forum, page=0):
+	def ForumThreadsList(self, forum, page=0):
 		page = page + 1 #fix bug - i think
 		r = self.sess.get('https://www.fxp.co.il/forumdisplay.php?f=%s&page=%s' % (forum,page))
 		return re.findall('id="thread_title_(.*?)"',r.text)
