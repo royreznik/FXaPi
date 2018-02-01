@@ -29,7 +29,7 @@ user.comment(THREAD_ID, CONTENT)
 #editComment
 #edit your comment
 #if ADD is True app will add the CONTENT to the existing CONTENT
-user.editComment(COMMENT_ID, CONTENT, ADD=True/False)
+user.editComment(COMMENT_ID, CONTENT, ADD)
 ```
 
 ```python
