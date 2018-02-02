@@ -93,6 +93,11 @@ class fxpLive():
 			msgid = int(re.search('post_message_(.+)', userHtml.find(class_='content').find('div').get('id')).group(1))
 			'''
 
+			#remove quotes from the message
+			if postcontent.find(class_='bbcode_quote') != None:
+				postcontent.find(class_='bbcode_container').decompose()
+				#return
+
 			#filter youtube content
 			if postcontent.find(class_='videoyoudiv') != None:
 				return
@@ -105,10 +110,6 @@ class fxpLive():
 			if postcontent.find('video') != None:
 				return
 			
-			#filter messages that contain quote
-			if postcontent.find(class_='quote_container') != None:
-				return
-		
 			#remove empty lines
 			content = '\n'.join( list(filter(None, postcontent.text.splitlines())) )
 
