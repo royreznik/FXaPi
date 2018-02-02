@@ -95,3 +95,6 @@ if user.login():
 - [ ] Organize my code
 - [ ] Add more web interface features
 - [ ] fxpLive class rewriting
+
+## Screenshots
+![Console](https://image.prntscr.com/image/_ZhGSXDmTPquViv0wQOgUA.png)
