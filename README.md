@@ -30,6 +30,10 @@ user.comment(THREAD_ID, CONTENT)
 #edit your comment
 #if ADD is True app will add the CONTENT to the existing CONTENT
 user.editComment(COMMENT_ID, CONTENT, ADD)
+
+#reply
+#reply message CommentClass
+user.reply(CommentClass, ReplyData, spamPrevention=False):
 ```
 
 ```python
