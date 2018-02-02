@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+import requests
 def urlAlive(url):
 	min_attr = ('scheme' , 'netloc')
 	try:

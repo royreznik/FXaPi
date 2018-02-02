@@ -7,7 +7,6 @@ import json
 from bs4 import BeautifulSoup
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 import os.path
-from urllib.parse import urlparse
 import random
 
 from .fxplive import *
@@ -215,6 +214,7 @@ class fxp():
 			else:
 				return False
 		
+
 		print ('[*] Uploading image to fxp server')
 		
 		multipart_data = MultipartEncoder(
