@@ -137,3 +137,9 @@ class fxpLive():
 		usernamenodejs = re.search('var usernamenodejs = "(.+?)";', r.text).group(1)
 		return {'id':useridnodejs, 'username':usernamenodejs}
 	#---------------------New---------------------
+
+	#---------------------TEST--------------------
+	def getnodeid(self, THREAD_ID):
+		r = self.user.sess.get('https://www.fxp.co.il/showthread.php?t=%s' % THREAD_ID)
+		return re.search('var threadidnode = "(.*?)";', r.text).group(1)
+	#---------------------TEST--------------------
