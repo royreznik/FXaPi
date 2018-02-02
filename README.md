@@ -60,7 +60,7 @@ import time
 from fxplib import *
 
 @FxpEvents.on('newcomment')
-def on_newcomment_handle(data):
+def on_newcomment_handle(comment):
 	print ('New comment')
 	print (data)
 
