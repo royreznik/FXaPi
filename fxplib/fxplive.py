@@ -6,8 +6,11 @@ from bs4 import BeautifulSoup
 import time
 import json
 import re
+from .threadComment import *
 
 FxpEvents = EventEmitter(wildcards=True)
+
+
 
 class fxpLive():
 	def __init__(self, user):
@@ -113,6 +116,16 @@ class fxpLive():
 			#remove empty lines
 			content = '\n'.join( list(filter(None, postcontent.text.splitlines())) )
 
+			FxpEvents.emit('newcomment', Comment(
+				username=username,
+				userid=userid,
+				content=content,
+				threadid=int(data['id']),
+				threadtitle=data['title'],
+				commentid=int(msgid),
+				postsnumber=int(data['posts'])
+			))
+			'''
 			postData = {
 				'username': username,
 				'userid': userid,
@@ -124,7 +137,7 @@ class fxpLive():
 			}
 
 			FxpEvents.emit('newcomment', postData)
-
+			'''
 		except Exception as e:			
 			pass		
 

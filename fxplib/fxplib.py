@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 import os.path
 from urllib.parse import urlparse
+import random
 
 from .fxplive import *
 from .helpers import *  
@@ -112,6 +113,16 @@ class fxp():
 		else:
 			return False
 	
+	#TODO: Add to repo option list
+	def reply(self, replyToComment, content, spamPrevention=False):
+		if spamPrevention:
+			content += ' [COLOR=#fafafa]%s[/COLOR]' % str('{:03}'.format(random.randrange(1, 10**4))) #Spam prevention
+		newCommentid = self.comment(replyToComment.threadid, '[QUOTE=%s;%s]%s[/QUOTE]%s' % (replyToComment.username, replyToComment.id, replyToComment.content, content))
+		if newCommentid:
+			return newCommentid
+		else:
+			return False
+
 
 	def editComment(self, commentid, message, add=False):
 		r = self.sess.post('https://www.fxp.co.il/ajax.php?do=quickedit&p=%s' % str(commentid), data={
