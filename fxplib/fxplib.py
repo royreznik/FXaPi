@@ -12,6 +12,30 @@ import random
 from .fxplive import *
 from .helpers import *  
 
+def fxpRegister(username, password, email):
+	md5password = hashlib.md5(password.encode('utf-8')).hexdigest()
+	r = requests.post('https://www.fxp.co.il/register.php?do=addmember', data={
+		'username':username,
+		'password':'',
+		'passwordconfirm':'',
+		'email':email,
+		'emailconfirm':email,
+		'agree':1,
+		's':'',
+		'securitytoken':'guest',
+		'do':'addmember',
+		'url':'https://www.fxp.co.il/forumdisplay.php?f=21',
+		'password_md5':md5password,
+		'passwordconfirm_md5':md5password,
+		'day':'',
+		'month':'',
+		'year':''
+	})
+	if 'תודה לך' in r.text:
+		return fxp(username, password)
+	else:
+		return False
+
 class fxp():
 	def __init__(self, username, password):
 		self.loggedin = False
