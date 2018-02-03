@@ -66,26 +66,29 @@ class fxp():
 
 	#Login with user data
 	def login(self):
-		login_req = self.sess.post('https://www.fxp.co.il/login.php?do=login', data={
-			'do':'login',
-			'vb_login_md5password':self.md5password,
-			'vb_login_md5password_utf':self.md5password,
-			's':None,
-			'securitytoken':self.securitytoken,
-			'url':'https://www.fxp.co.il/index.php',
-			'vb_login_username':self.username,
-			'vb_login_password':None,
-			'cookieuser':1
-		})
-		if 'USER_ID_FXP' in login_req.text:
-			home_req = self.sess.get('https://www.fxp.co.il')
-			self.securitytoken = re.search('SECURITYTOKEN = "(.+?)";', home_req.text).group(1)
-			self.userid = login_req.cookies.get_dict()['bb_userid']
-			self.liveupdatetoken = self.sess.cookies.get_dict()['bb_livefxpext']
-			self.loggedin = True
+		if self.loggedin != True:
+			login_req = self.sess.post('https://www.fxp.co.il/login.php?do=login', data={
+				'do':'login',
+				'vb_login_md5password':self.md5password,
+				'vb_login_md5password_utf':self.md5password,
+				's':None,
+				'securitytoken':self.securitytoken,
+				'url':'https://www.fxp.co.il/index.php',
+				'vb_login_username':self.username,
+				'vb_login_password':None,
+				'cookieuser':1
+			})
+			if 'USER_ID_FXP' in login_req.text:
+				home_req = self.sess.get('https://www.fxp.co.il')
+				self.securitytoken = re.search('SECURITYTOKEN = "(.+?)";', home_req.text).group(1)
+				self.userid = login_req.cookies.get_dict()['bb_userid']
+				self.liveupdatetoken = self.sess.cookies.get_dict()['bb_livefxpext']
+				self.loggedin = True
+				return True
+			else: 
+				return False
+		else:
 			return True
-		else: 
-			return False
 
 	#user.createThread(TITLE, CONTENT, FORUM_ID)
 	def createThread(self, title, content, froumid, prefix=''):
