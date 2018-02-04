@@ -152,7 +152,7 @@ class fxpLive():
 			FxpEvents.emit('newcomment', postData)
 			'''
 		except Exception as e:	
-			print (e)		
+			#print (e)		
 			pass		
 
 	#/---------------Socket.io events Functions---------------/#
