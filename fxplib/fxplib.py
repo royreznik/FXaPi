@@ -116,18 +116,25 @@ class fxp():
 			nRe = re.search('t=(.*?)&p=(.*?)#post', r.url)
 			return {'eshkolid':nRe.group(1), 'postid': nRe.group(2), 'url': r.url}
 		
-	def comment(self, eshkol, message):
-		r = self.sess.post('https://www.fxp.co.il/newreply.php?do=postreply&t=%s' % str(eshkol), data={
+	def comment(self, threadid, content):
+		if hasattr(self, '_lastComment'):
+			if self._lastComment == content:
+				return False
+			self._lastComment = content
+		else:
+			self._lastComment = None
+
+		r = self.sess.post('https://www.fxp.co.il/newreply.php?do=postreply&t=%s' % str(threadid), data={
 			'securitytoken': self.securitytoken, 
 			'ajax': '1', 
-			'message_backup': message,
-			'message': message, 
+			'message_backup': content,
+			'message': content, 
 			'wysiwyg': '1', 
 			'signature': '1',
 			'fromquickreply': '1',
 			's': '', 
 			'do': 'postreply',
-			't': int(eshkol),
+			't': int(threadid),
 			'p': 'who cares',
 			'specifiedpost': 1, 
 			'parseurl': 1, 
