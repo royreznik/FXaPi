@@ -82,14 +82,27 @@ class fxpLive():
 		userid = data['lastpostuserid']
 		if username == self.user.username or userid == self.user.userid: return
 		try:
-			r = self.user.sess.get('https://www.fxp.co.il/showthread.php?t=%s&page=%s' % (data['id'],data['pages'])) #maybe need to use sess to see block eshkolot
+			r = self.user.sess.get('https://www.fxp.co.il/showthread.php', params={
+				't':data['id'],
+				'page':data['pages'],
+				'web_fast_fxp':1 #make page length smaller
+			})
 			soup = BeautifulSoup(r.text, "html.parser")
 			
-			#UPDATE ON 31/12/2017 
-			msgid = soup.find(class_='postcounter', text='#%s'%str(data['posts']+1)).attrs['name'].replace('post','')
-			postcontent = soup.find(id='post_message_%s' % msgid).find(class_='postcontent restore')
+			#NEW PARSER - 4/2/2018 (web_fast_fxp)
+			commentHtml = soup.find_all(class_='user_pic_%s'%userid)[-1].parent.parent.parent.parent.parent
+			contentParentHtml = commentHtml.find(class_='content')
+			msgid = contentParentHtml.find(id=re.compile('post_message_(.*?)')).attrs['id'].replace('post_message_', '')
+			postcontent = contentParentHtml.find(class_='postcontent restore ')
 
 			'''
+			#UPDATED ON 31/12/2017 
+			msgid = soup.find(class_='postcounter', text='#%s'%str(data['posts']+1)).attrs['name'].replace('post','')
+			postcontent = soup.find(id='post_message_%s' % msgid).find(class_='postcontent restore')
+			'''
+
+			'''
+			#FIRST PARSER
 			print (soup.find_all('li', class_='postbit postbitim postcontainer')[0].find(class_='username'))
 			userHtml = soup.find_all('div', attrs={'data-user-id':userid})[-1].parent.parent #not working properly (not all the time)
 			postcontent = userHtml.find(class_='postcontent restore')
@@ -138,7 +151,8 @@ class fxpLive():
 
 			FxpEvents.emit('newcomment', postData)
 			'''
-		except Exception as e:			
+		except Exception as e:	
+			print (e)		
 			pass		
 
 	#/---------------Socket.io events Functions---------------/#
