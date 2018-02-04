@@ -74,7 +74,7 @@ class fxpLive():
 		FxpEvents.emit('newpm', data)
 
 	def _on_newtread_parse(self, io, data, *ex_prms):
-		#TODO: add data parse
+		#TODO: add Parser
 		FxpEvents.emit('newthread', data)
 
 	def _on_newpost_parse(self, io, data, *ex_prms):	

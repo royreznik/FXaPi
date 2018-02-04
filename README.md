@@ -58,6 +58,25 @@ usser.sendPrivateChat(TO_USERNAME, FIRST_PM_ID, CONTENT)
 user.updateProfileImage(IMG_PATH)
 ```
 
+## Live Events System
+```python
+@FxpEvents.on('newcomment')
+def on_newcomment_handle(comment):
+	#comment is is Class object that contain username, userid, content, threaid, threadtitle, commentid 
+```
+
+```python
+@FxpEvents.on('newpm')
+def on_newcomment_handle(data):
+	#data is a dict object
+```
+
+```python
+@FxpEvents.on('newthread')
+def on_newcomment_handle(data):
+	#data is a dict object
+```
+
 ## Example
 ```python
 import time
