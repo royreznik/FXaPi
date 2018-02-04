@@ -26,7 +26,10 @@ class fxpLive():
 				return False
 			self.socketIO = SocketIO_cli('https://socket5.fxp.co.il')
 			self.socketIO.on_connect = print ('[*] Connected')
-			self.addForum('', raw=True)
+			
+			#login to the live events system
+			self.socketIO.emit(['message', json.dumps({'userid':self.user.liveupdatetoken})])
+			#self.addForum('', raw=True)
 
 
 			self.socketIO.on('newpmonpage', callback=self._on_newpm_parse)
@@ -34,7 +37,7 @@ class fxpLive():
 			self.socketIO.on('newtread', callback=self._on_newtread_parse)
 
 			if debug == True:
-				self.socketIO.ws.on_message = lambda ws, msg: (self.socketIO.ws.on_message, print(msg))
+				self.socketIO.ws.on_message = lambda ws, msg: (ws.on_message, print(msg))
 
 		return self.socketIO
 
