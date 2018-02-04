@@ -11,6 +11,7 @@ import random
 
 from .fxplive import *
 from .helpers import *  
+from .forumsObjects import *
 
 def fxpRegister(username, password, email):
 	md5password = hashlib.md5(password.encode('utf-8')).hexdigest()
@@ -151,7 +152,21 @@ class fxp():
 	def reply(self, replyToComment, content, spamPrevention=False):
 		if spamPrevention:
 			content += ' [COLOR=#fafafa]%s[/COLOR]' % str('{:03}'.format(random.randrange(1, 10**4))) #Spam prevention
-		newCommentid = self.comment(replyToComment.threadid, '[QUOTE=%s;%s]%s[/QUOTE]%s' % (replyToComment.username, replyToComment.id, replyToComment.content, content))
+		
+		if type(replyToComment) == FxpComment:
+			newCommentid = self.comment(
+				replyToComment.threadid, 
+				'[QUOTE=%s;%s]%s[/QUOTE]%s' % (replyToComment.username, replyToComment.id, replyToComment.content, content)
+			)
+		elif type(replyToComment) == FxpThread:
+			newCommentid = self.comment(
+				replyToComment.id, 
+				'[QUOTE=%s;%s]%s[/QUOTE]%s' % (replyToComment.username, replyToComment.commentid, replyToComment.content, content)
+			)
+		else:
+			return False
+
+
 		if newCommentid:
 			return newCommentid
 		else:

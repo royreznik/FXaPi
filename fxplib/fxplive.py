@@ -74,24 +74,33 @@ class fxpLive():
 		FxpEvents.emit('newpm', data)
 
 	def _on_newtread_parse(self, io, data, *ex_prms):
-		r = self.user.sess.get('https://www.fxp.co.il/showthread.php', params={
-			't':data['id'],
-			'web_fast_fxp':1 #make page length smaller
-		})
-		soup = BeautifulSoup(r.text, "html.parser")
+		if data['username'] == self.user.username or data['username'] == self.user.userid: return
+		try:
+			r = self.user.sess.get('https://www.fxp.co.il/showthread.php', params={
+				't':data['id'],
+				'web_fast_fxp':1 #make page length smaller
+			})
+			soup = BeautifulSoup(r.text, "html.parser")
 
-		threadContent = soup.find(class_='postcontent restore simple')
-		content = '\n'.join( list(filter(None, threadContent.text.splitlines())) )
+			#FIRST PARSER - 4/2/2018 (web_fast_fxp)
+			threadContent = soup.find(class_='postcontent restore simple')
+			content = '\n'.join( list(filter(None, threadContent.text.splitlines())) )
+			commentid = soup.find(id=re.compile('post_message_(.*?)')).attrs['id'].replace('post_message_', '')
 
-		#TODO: add Parser
-		FxpEvents.emit('newthread', FxpThread(
-			username=data['username'],
-			userid=data['poster'],
-			id=data['id'],
-			title=data['title'],
-			content=content,
-			prefix=data['prefix']
-		))
+
+			FxpEvents.emit('newthread', FxpThread(
+				username=data['username'],
+				userid=data['poster'],
+				id=data['id'],
+				title=data['title'],
+				content=content,
+				commentid=commentid,
+				prefix=data['prefix']
+			))
+
+		except Exception as e:	
+			#print (e)		
+			pass
 
 	def _on_newpost_parse(self, io, data, *ex_prms):	
 		username = data['lastpostuser']
@@ -145,7 +154,7 @@ class fxpLive():
 			#remove empty lines
 			content = '\n'.join( list(filter(None, postcontent.text.splitlines())) )
 
-			FxpEvents.emit('newcomment', Comment(
+			FxpEvents.emit('newcomment', FxpComment(
 				username=username,
 				userid=userid,
 				content=content,

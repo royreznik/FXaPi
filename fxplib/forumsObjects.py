@@ -1,5 +1,5 @@
 class FxpThread():
-	def __init__(self, username, userid, id, title, content,  prefix=''):
+	def __init__(self, username, userid, id, title, content, commentid, prefix=''):
 		self.username = username
 		self.userid = userid
 
@@ -9,8 +9,9 @@ class FxpThread():
 		self.content = content
 		self.prefix = prefix
 
+		self.commentid = commentid
 
-class Comment():
+class FxpComment():
 	def __init__(self, username, userid, content, threadid, threadtitle, commentid, postsnumber):
 		self.username = username
 		self.userid = userid
