@@ -62,18 +62,18 @@ user.updateProfileImage(IMG_PATH)
 ```python
 @FxpEvents.on('newcomment')
 def on_newcomment_handle(comment):
-	#comment is is Class object that contain username, userid, content, threaid, threadtitle, commentid 
-```
-
-```python
-@FxpEvents.on('newpm')
-def on_newcomment_handle(data):
-	#data is a dict object
+	#comment is is Class object that contain username, userid, content, threaid, threadtitle, id 
 ```
 
 ```python
 @FxpEvents.on('newthread')
-def on_newcomment_handle(data):
+def on_newnewthread_handle(fxpThread):
+	#fxpThread is is Class object that contain username, userid, id, title, content, prefix
+```
+
+```python
+@FxpEvents.on('newpm')
+def on_newpm_handle(data):
 	#data is a dict object
 ```
 

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import time
 import json
 import re
-from .threadComment import *
+from .forumsObjects import *
 
 FxpEvents = EventEmitter(wildcards=True)
 
@@ -74,8 +74,24 @@ class fxpLive():
 		FxpEvents.emit('newpm', data)
 
 	def _on_newtread_parse(self, io, data, *ex_prms):
+		r = self.user.sess.get('https://www.fxp.co.il/showthread.php', params={
+			't':data['id'],
+			'web_fast_fxp':1 #make page length smaller
+		})
+		soup = BeautifulSoup(r.text, "html.parser")
+
+		threadContent = soup.find(class_='postcontent restore simple')
+		content = '\n'.join( list(filter(None, threadContent.text.splitlines())) )
+
 		#TODO: add Parser
-		FxpEvents.emit('newthread', data)
+		FxpEvents.emit('newthread', FxpThread(
+			username=data['username'],
+			userid=data['poster'],
+			id=data['id'],
+			title=data['title'],
+			content=content,
+			prefix=data['prefix']
+		))
 
 	def _on_newpost_parse(self, io, data, *ex_prms):	
 		username = data['lastpostuser']
