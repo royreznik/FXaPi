@@ -80,6 +80,7 @@ class fxp():
 			})
 			if 'USER_ID_FXP' in login_req.text:
 				home_req = self.sess.get('https://www.fxp.co.il')
+				if 'הושעת' in home_req.text: return False
 				self.securitytoken = re.search('SECURITYTOKEN = "(.+?)";', home_req.text).group(1)
 				self.userid = login_req.cookies.get_dict()['bb_userid']
 				self.liveupdatetoken = self.sess.cookies.get_dict()['bb_livefxpext']
