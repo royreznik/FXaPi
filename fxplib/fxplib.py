@@ -304,3 +304,97 @@ class fxp():
 		else:
 			return self.sess.get('https://www.fxp.co.il/ajax.php?do=forumdisplayqserach&name_startsWith=%s' % name).json()
 	'''
+	
+
+class Admin(fxp):
+    def __init__(self, username, password, forum_id):
+        fxp.__init__(self,username, password)
+        self.forum_id = forum_id
+
+
+    def lock_unlock_thread(self, forum_id, thread_id, content='ננעל'):
+        if self.forum_id is not forum_id or self.forum_id is not -1:
+            print("You don't have permissions on this forum")
+            return False;
+
+        if hasattr(self, '_lastComment'):
+            if self._lastComment == content:
+                return False
+            self._lastComment = content
+        else:
+            self._lastComment = None
+
+        r = self.sess.post("https://www.fxp.co.il/newreply.php?do=postreply&t=%s" % thread_id, data={
+            'message_backup': str(content),
+            'message': str(content),
+            'wyswiyg': 1,
+            'openclose': 1,
+            'sbutton': 'שלח תגובה מהירה',
+            'fromqucikreply': 1,
+            's': None,
+            'securitytoken': self.securitytoken,
+            'do': 'postreply',
+            't':str(thread_id),
+            'p': 'who carers',
+            'specifiedpost': 0,
+            'parserurl': 1,
+            'loggedinuser': self.userid,
+            'posthash':None,
+            'poststartime':None
+        })
+        if 'showthread.php?t=' in r.url:
+            return True
+        return False
+
+# TODO: Find a way to get the Admin Hash automatically
+class Manager(Admin):
+    def __init__(self,username,password,admin_hash):
+        Admin.__init__(self, username, password, -1)
+        self.admin_hash = admin_hash
+        self.manager_log = False
+
+    def manager_login(self):
+        r = self.sess.post('https://www.fxp.co.il/login.php?do=login', data={
+            'url': '/modcp/banning.php?do=banuser',
+            's': None,  # Dont know what is it, but its not needed
+            'securitytoken': self.securitytoken,
+            'logintype': 'modcplogin',
+            'do': 'login',
+            'vb_login_md5password': self.md5password,
+            'vb_login_md5password_utf': self.md5password,
+            'vb_login_username': self.username,
+            'vb_login_password': None  # Same Security problem
+        })
+        if 'התחברת בהצלחה' in r.text:
+            return True
+        return False
+
+    # Period goes like: 'D_3' == 3 Days
+    # Period = 'PERMANENT' - no time limit
+    def ban_user(self,username,period='D_3'):
+        r = self.sess.post("https://www.fxp.co.il/modcp/banning.php?do=dobanuser",data={
+            'do': 'dobanuser',
+            'adminhash': self.admin_hash,
+            'securitytoken': self.securitytoken,  # This One can be Null and its still works, Another Security problem
+            'username': username,
+            'usergroupid': 8,
+            'period': period,
+            'reason': 'Test'
+        })
+        if 'הורחק' in r.text:
+            return True
+        return False
+
+    def winner_user(self,username, period='D_3'):
+        r = self.sess.post("https://www.fxp.co.il/modcp/banning.php?do=dobanuser", data={
+            'do': 'dobanuser',
+            'adminhash': self.admin_hash,
+            'securitytoken': self.securitytoken,  # This One can be Null and its still works, Another Security problem
+            'username': username,
+            'usergroupid': 40,
+            'period': period,
+            'reason': 'Test'
+        })
+        if 'הורחק' in r.text:
+            return True
+        return False
